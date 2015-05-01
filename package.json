@@ -1,0 +1,37 @@
+{
+  "name": "gulp-mson-to-json-schema",
+  "version": "0.0.1",
+  "description": "Generate JSON Schema files from API Blueprint’s MSON",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pushred/gulp-mson-to-json-schema/issues"
+  },
+  "author": {
+    "name": "Eric Lanehart",
+    "email": "eric@pushred.co",
+    "url": "http://www.pushtheredbutton.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pushred/mson-to-json-schema.git"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulp",
+    "gulpplugin",
+    "api-blueprint",
+    "mson",
+    "json-schema"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.4",
+    "lodash.transform": "^3.0.2",
+    "protagonist": "^0.19.3",
+    "through2": "^0.6.5"
+  }
+}
