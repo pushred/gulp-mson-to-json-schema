@@ -32,5 +32,9 @@
     "boutique": "^0.1.7",
     "gulp-util": "^3.0.4",
     "protagonist": "^0.19.3"
+  },
+  "devDependencies": {
+    "lab": "^5.8.0",
+    "vinyl-fs": "^1.0.0"
   }
 }
