@@ -29,9 +29,8 @@
     "json-schema"
   ],
   "dependencies": {
+    "boutique": "^0.1.7",
     "gulp-util": "^3.0.4",
-    "lodash.transform": "^3.0.2",
-    "protagonist": "^0.19.3",
-    "through2": "^0.6.5"
+    "protagonist": "^0.19.3"
   }
 }

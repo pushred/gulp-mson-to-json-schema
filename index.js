@@ -1,42 +1,25 @@
-const PLUGIN = 'mson-to-json-schema';
+const PLUGIN = 'gulp-mson-to-json-schema';
 
-var inspect = require('util').inspect;
+var boutique = require('boutique');
 var gutil = require('gulp-util');
+var objectPath = require('object-path').get;
 var Path = require('path');
 var protagonist = require('protagonist');
 var through = require('through2');
-var transform = require('lodash.transform');
 
-function generateSchema (mson, filename) {
-  if (!mson.ast.content.length) {
-    console.error(new gutil.PluginError(PLUGIN, filename + ' is not valid MSON').toString());
-    return;
-  }
+function getDataStructures (ast) {
+  var matches = [];
 
-  mson = mson.ast.content && mson.ast.content[0].content[0];
+  ast.content.forEach(function (section) {
+    if (section.element !== 'category') return;
 
-  var schema = {
-    $schema: "http://json-schema.org/draft-04/schema#",
-    title: mson.name.literal,
-    properties: {},
-    type: mson.typeDefinition.typeSpecification.name
-  };
-
-  mson.sections[0].content.forEach(function (msonProperty) {
-    msonProperty = msonProperty.content;
-
-    var property = transform({
-      type: msonProperty.valueDefinition.typeDefinition.typeSpecification.name,
-      example: msonProperty.valueDefinition.values[0].literal,
-      description: msonProperty.description
-    }, function (obj, val, key) {
-      if (val) obj[key] = val;
+    section.content.forEach(function (element) {
+      if (element.element !== 'dataStructure') return;
+      matches.push(element);
     });
-
-    schema.properties[msonProperty.name.literal] = property;
   });
 
-  return schema;
+  return matches;
 };
 
 module.exports = function() {
@@ -51,21 +34,27 @@ module.exports = function() {
 
     protagonist.parse(mson, function (err, result) {
       if (err) {
-        console.error(new gutil.PluginError(err).toString());
+        console.error(new gutil.PluginError(PLUGIN, err).toString());
         callback();
       };
 
-      var schema = generateSchema(result, filename);
-      if (!schema) return;
-
-      var file = new gutil.File({
-        base: '/',
-        cwd: '/',
-        path: '/' + filename.replace('.md', '.json'),
-        contents: new Buffer(schema)
+      result.warnings.forEach(function (warning) {
+        console.error(new gutil.PluginError(PLUGIN, warning).toString());
       });
 
-      self.push(file);
+      getDataStructures(result.ast).forEach(function (ast) {
+        var schema = boutique.represent({ ast: ast, contentType: 'application/schema+json' }, function (err, body) {
+          if (err) console.error(new gutil.PluginError(PLUGIN, err).toString());
+
+          self.push(new gutil.File({
+            base: '/',
+            cwd: '/',
+            path: '/' + ast.name.literal + '.json',
+            contents: new Buffer(body)
+          }));
+        });
+      });
+
       callback();
     });
   });
