@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pushred/mson-to-json-schema.git"
+    "url": "https://github.com/pushred/gulp-mson-to-json-schema.git"
   },
   "engines": {
     "node": ">=0.10.0"
