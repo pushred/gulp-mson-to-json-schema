@@ -41,4 +41,22 @@ lab.experiment('API Blueprints', function(){
       });
   });
 
+  lab.test('full API Blueprint with other sections', function (done) {
+    var files = [];
+
+    vfs.src(__dirname + '/fixtures/blueprint.md')
+      .pipe(MSONtoJSON())
+      .on('data', function (file) {
+        files.push(file);
+      })
+      .on('finish', function(){
+        assert.equal(files.length, 2);
+
+        var schema = JSON.parse(files[0].contents.toString('utf8'));
+        assert.equal(schema.properties.name.description, 'Short description of the product');
+
+        done();
+      });
+  });
+
 });
