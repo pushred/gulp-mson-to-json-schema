@@ -25,7 +25,7 @@ var MSONtoJSON = require('gulp-markdown-to-json-schema');
 
 gulp.task('schema', function(){
   return gulp.src('./schema/**/*.md')
-    .pipe(msonToJSONSchema())
+    .pipe(MSONtoJSON())
     .pipe(gulp.dest('./schema/json'));
 });
 ```
