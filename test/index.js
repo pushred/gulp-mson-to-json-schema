@@ -60,3 +60,27 @@ lab.experiment('API Blueprints', function(){
   });
 
 });
+
+lab.experiment('Sample Data', function(){
+
+  lab.test('optionally add sample data', function (done) {
+    var files = [];
+
+    vfs.src(__dirname + '/fixtures/single.md')
+      .pipe(MSONtoJSON({ samples: true }))
+      .on('data', function (file) {
+        files.push(file);
+      })
+      .on('finish', function(){
+        assert.equal(files.length, 2);
+        assert.equal(files[0].path.split('/').pop(), 'product.json');
+        assert.equal(files[1].path.split('/').pop(), 'sample-product.json');
+
+        var sample = JSON.parse(files[1].contents.toString('utf8'));
+        assert.equal(sample.id, 1);
+
+        done();
+      });
+  });
+
+});

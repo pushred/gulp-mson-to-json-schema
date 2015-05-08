@@ -22,7 +22,7 @@ function getDataStructures (ast) {
   return matches;
 };
 
-module.exports = function() {
+module.exports = function (config) {
 
   var stream = through.obj(function (input, encoding, callback) {
     if (input.stat.isDirectory()) return;
@@ -43,6 +43,7 @@ module.exports = function() {
       });
 
       getDataStructures(result.ast).forEach(function (ast) {
+
         var schema = boutique.represent({ ast: ast, contentType: 'application/schema+json' }, function (err, body) {
           if (err) console.error(new gutil.PluginError(PLUGIN, err).toString());
 
@@ -53,6 +54,20 @@ module.exports = function() {
             contents: new Buffer(body)
           }));
         });
+
+        if (!config || !config.samples) return;
+
+        var sample = boutique.represent({ ast: ast, contentType: 'application/json' }, function (err, body) {
+          if (err) console.error(new gutil.PluginError(PLUGIN, err).toString());
+
+          self.push(new gutil.File({
+            base: '/',
+            cwd: '/',
+            path: '/sample-' + ast.name.literal + '.json',
+            contents: new Buffer(body)
+          }));
+        });
+
       });
 
       callback();

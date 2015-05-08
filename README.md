@@ -3,6 +3,7 @@
  - Pipe in [API Blueprint][api-blueprint] files with [Data Structures][data-structures]
  - Parse the [MSON][mson] with [protagonist][protagonist]
  - Convert to [JSON Schema draft v4][json-schema] from the resulting AST with [boutique][boutique]
+ - Optionally include JSON files with sample values for use in mocking, docs, etc.
  - Enjoy designing your schema in Markdown!
 
 
@@ -15,6 +16,12 @@ $ npm install gulp-mson-to-json --save-dev
 
 
 pipe
+----
+
+##### options
+
+ - `samples` set to `true` to include schema conformant JSON files, populated with MSON sample values
+
 ----
 
 **`/gulpfile.js`**
