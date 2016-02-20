@@ -1,6 +1,6 @@
 {
   "name": "gulp-mson-to-json-schema",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Generate JSON Schema files from API Blueprint’s MSON",
   "license": "MIT",
   "bugs": {
